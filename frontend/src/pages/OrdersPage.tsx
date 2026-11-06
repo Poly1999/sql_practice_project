@@ -24,7 +24,7 @@ function OrdersPage() {
       const token = localStorage.getItem('token');
 
       try {
-        const response = await fetch('http://localhost:3001/orders', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -49,7 +49,7 @@ function OrdersPage() {
     const body: OrdersBody = { item };
 
     try {
-      const response = await fetch('http://localhost:3001/orders', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,10 +81,13 @@ function OrdersPage() {
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch(`http://localhost:3001/orders/${id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/orders/${id}`,
+        {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
       const data = await response.json();
 
@@ -100,7 +103,7 @@ function OrdersPage() {
 
   const handleStartEdit = (order: Orders) => {
     setEditingId(order.id);
-    setIditItem(order.item);
+    setEditItem(order.item);
   };
 
   const handleCancelEdit = () => {
@@ -113,14 +116,17 @@ function OrdersPage() {
     const body: OrdersBody = { item: editItem };
 
     try {
-      const response = await fetch(`http://localhost:3001/orders/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/orders/${id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(body),
         },
-        body: JSON.stringify(body),
-      });
+      );
 
       const data = await response.json();
 
